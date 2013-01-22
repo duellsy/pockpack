@@ -1,6 +1,6 @@
 {
     "name": "duellsy/getpocket",
-    "description": "",
+    "description": "Package to handle communication with GetPocket.com API neatly",
     "authors": [
         {
             "name": "Chris Duell",
@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "4.0.x"
+        "guzzle/guzzle": "*"
     },
     "autoload": {
         "classmap": [
