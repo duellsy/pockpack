@@ -1,0 +1,23 @@
+{
+    "name": "duellsy/getpocket",
+    "description": "",
+    "authors": [
+        {
+            "name": "Chris Duell",
+            "email": "me@chrisduell.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.0.x"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Duellsy\\Getpocket": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
