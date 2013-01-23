@@ -1,5 +1,7 @@
 {
     "name": "duellsy/getpocket",
+    "type": "library",
+    "license": "MIT",
     "description": "Package to handle communication with GetPocket.com API neatly",
     "authors": [
         {

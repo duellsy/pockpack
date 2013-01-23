@@ -28,7 +28,13 @@ class GetpocketServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		$this->app['getpocket'] = $this->app->share(function($app)
+        {
+            return new Getpocket;
+        });
+
+        include __DIR__.'/routes.php';
+
 	}
 
 	/**
