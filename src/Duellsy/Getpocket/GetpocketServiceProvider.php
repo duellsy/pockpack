@@ -32,9 +32,6 @@ class GetpocketServiceProvider extends ServiceProvider {
         {
             return new Getpocket;
         });
-
-        include __DIR__.'/routes.php';
-
 	}
 
 	/**
