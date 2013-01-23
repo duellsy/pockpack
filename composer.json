@@ -3,6 +3,7 @@
     "type": "library",
     "license": "MIT",
     "description": "Package to handle communication with GetPocket.com API neatly.",
+    "keywords": ["pocket", "getpocket", "get pocket", "read it later", "readitlater"],
     "authors": [
         {
             "name": "Chris Duell",
