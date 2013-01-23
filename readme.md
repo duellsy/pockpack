@@ -1,5 +1,7 @@
 # GetPocket Package
 
+NB This package NOT ready for use, please do not install.
+
 This package is for connecting to the [getpocket API](http://getpocket.com/developer/)
 
 You'll need to register an app with getpocket, and use the generated tokens provided in order for you to be able to connect to the API.

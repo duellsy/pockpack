@@ -2,7 +2,7 @@
     "name": "duellsy/getpocket",
     "type": "library",
     "license": "MIT",
-    "description": "Package to handle communication with GetPocket.com API neatly",
+    "description": "Package to handle communication with GetPocket.com API neatly. NB This is not even in alpha stage yet, please do not install.",
     "authors": [
         {
             "name": "Chris Duell",
