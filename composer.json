@@ -2,7 +2,7 @@
     "name": "duellsy/getpocket",
     "type": "library",
     "license": "MIT",
-    "description": "Package to handle communication with GetPocket.com API neatly. NB This is not even in alpha stage yet, please do not install.",
+    "description": "Package to handle communication with GetPocket.com API neatly.",
     "authors": [
         {
             "name": "Chris Duell",
@@ -14,9 +14,6 @@
         "guzzle/guzzle": "*"
     },
     "autoload": {
-        "classmap": [
-            "src/migrations"
-        ],
         "psr-0": {
             "Duellsy\\Getpocket": "src/"
         }
