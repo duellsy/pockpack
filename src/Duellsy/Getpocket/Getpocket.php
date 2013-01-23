@@ -95,14 +95,16 @@ class Getpocket
      * @param  string $consumer_key
      * @param  string $access_token
      */
-    public function retrieve($consumer_key, $access_token)
+    public function retrieve($consumer_key, $access_token, $options = array())
     {
 
         $params = array(
             'consumer_key'  => $consumer_key,
-            'access_token'  => $access_token,
-            'detailType'    => 'complete'
+            'access_token'  => $access_token
         );
+
+        // combine the creds with any options sent
+        $params = array_merge($params, $options);
 
         $client = new Client(self::BASE_URL);
         $request = $client->post('/v3/get');
