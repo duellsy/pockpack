@@ -4,7 +4,9 @@ This package is for connecting to the [getpocket API](http://getpocket.com/devel
 
 You'll need to register an app with pocket, and use the generated tokens provided in order for you to be able to connect to the API.
 
-[![Build Status](https://travis-ci.org/duellsy/pockpack.png?branch=master)](https://travis-ci.org/duellsy/pockpack)
+master status: [![Build Status](https://travis-ci.org/duellsy/pockpack.png?branch=master)](https://travis-ci.org/duellsy/pockpack)
+
+develop status: [![Build Status](https://travis-ci.org/duellsy/pockpack.png?branch=develop)](https://travis-ci.org/duellsy/pockpack)
 
 ## Installation
 
