@@ -1,15 +1,24 @@
-# GetPocket Package
+# PockPack docs
 
 This package is for connecting to the [getpocket API](http://getpocket.com/developer/)
 
-You'll need to register an app with getpocket, and use the generated tokens provided in order for you to be able to connect to the API.
+You'll need to register an app with pocket, and use the generated tokens provided in order for you to be able to connect to the API.
+
+## Installation
+
+Pockpack is installable via [composer](http://getcomposer.org/doc/00-intro.md), the details are on [packagist, here.](https://packagist.org/packages/duellsy/pockpack)
+
+Add the following to the `require` section of your projects composer.json file:
+```
+    "duellsy/pockpack": "1.*"
+```
 
 ## Auth
 
 ### Get request token
 
 ```
-$request_token = Getpocket::connect($consumer_key);
+$request_token = Pockpack::connect($consumer_key);
 ```
 
 ### Redirect the user to pockets auth page
@@ -21,7 +30,7 @@ https://getpocket.com/auth/authorize?request_token=YOUR_REQUEST_TOKEN&redirect_u
 ### Get users access token
 
 ```
-$access_token = Getpocket::receiveToken($consumer_key, $request_token);
+$access_token = Pockpack::receiveToken($consumer_key, $request_token);
 ```
 
 ## Actions
@@ -31,7 +40,7 @@ This will return a full list of all active (unarchived) bookmarks, optionally
 you can have it also return extra information such as images
 
 ```
-$reading_list = Getpocket::retrieve($consumer_key, $access_token, [$options = array()]);
+$reading_list = Pockpack::retrieve($consumer_key, $access_token, [$options = array()]);
 ```
 
 The options array allows you to control exactly what is returned from the API.
@@ -57,40 +66,38 @@ $options = array(
 ### Archive bookmark
 
 ```
-Getpocket::archive($consumer_key, $access_token, $item_id);
+Pockpack::archive($consumer_key, $access_token, $item_id);
 ```
-
-### Unarchive bookmark
-
-```
-Getpocket::unarchive($consumer_key, $access_token, $item_id);
-```
-
 
 ### Re-add bookmark
 
 ```
-Getpocket::readd($consumer_key, $access_token, $item_id);
+Pockpack::readd($consumer_key, $access_token, $item_id);
 ```
 
 ### Favorite bookmark
 
 ```
-Getpocket::favorite($consumer_key, $access_token, $item_id);
+Pockpack::favorite($consumer_key, $access_token, $item_id);
 ```
 
 ### Unfavorite bookmark
 
 ```
-Getpocket::unfavorite($consumer_key, $access_token, $item_id);
+Pockpack::unfavorite($consumer_key, $access_token, $item_id);
 ```
 
+### Delete bookmark
+
+```
+Pockpack::delete($consumer_key, $access_token, $item_id);
+```
 
 
 ## Contributing
 
 Contributions are encouraged and welcome; to keep things organised, all bugs and requests should be
-opened in the github issues tab for the main project, at [duellsy/getpocket/issues](https://github.com/duellsy/getpocket/issues)
+opened in the github issues tab for the main project, at [duellsy/pockpack/issues](https://github.com/duellsy/pockpack/issues)
 
 All issues should have either [bug], [request], or [suggestion] prefixed in the title.
 

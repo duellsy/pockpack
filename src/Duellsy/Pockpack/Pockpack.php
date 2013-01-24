@@ -6,24 +6,28 @@ use Guzzle\Http\Client;
  * The Pockpack package is a quick wrap to make connecting and
  * consuming the pocket API much simpler and quicker to get up and running.
  * For information / documentation on using this package, please refer to:
- * https://github.com/duellsy/getpocket
+ * https://github.com/duellsy/pockpack
  *
  * @package    Pockpack
- * @version    1.0
+ * @version    1.1
  * @author     Chris Duell
  * @license    MIT
  * @copyright  (c) 2013 Chris Duell
- * @link       https://github.com/duellsy/getpocket
+ * @link       https://github.com/duellsy/pockpack
  */
 class Pockpack
 {
 
     const BASE_URL = 'https://getpocket.com';
 
+    /**
+     * Give external access to the base URL
+     */
     public function getBaseUrl()
     {
         return self::BASE_URL;
     }
+
 
 
     /**
@@ -148,7 +152,6 @@ class Pockpack
 
 
 
-
     /**
      * All single actions are routed through this method,
      * to wrap the request in the required format for the
@@ -176,43 +179,6 @@ class Pockpack
     }
 
 
-    /**
-     * Mark as bookmark as a favorite
-     *
-     * @param  string $consumer_key
-     * @param  string $access_token
-     * @param  int $item_id
-     */
-    public function favorite($consumer_key, $access_token, $item_id)
-    {
-        return self::sendSingle($consumer_key, $access_token, $item_id, 'favorite');
-    }
-
-    /**
-     * Unmark as bookmark as a favorite
-     *
-     * @param  string $consumer_key
-     * @param  string $access_token
-     * @param  int $item_id
-     */
-    public function unfavorite($consumer_key, $access_token, $item_id)
-    {
-        return self::sendSingle($consumer_key, $access_token, $item_id, 'unfavorite');
-    }
-
-
-    /**
-     * Remove a particular bookmark
-     *
-     * @param  string $consumer_key
-     * @param  string $access_token
-     * @param  int $item_id
-     */
-    public function delete($consumer_key, $access_token, $item_id)
-    {
-        return self::sendSingle($consumer_key, $access_token, $item_id, 'delete');
-    }
-
 
     /**
      * Archive a particular bookmark
@@ -227,6 +193,7 @@ class Pockpack
     }
 
 
+
     /**
      * Re-add a bookmark that was previously archived
      *
@@ -237,6 +204,48 @@ class Pockpack
     public function readd($consumer_key, $access_token, $item_id)
     {
         return self::sendSingle($consumer_key, $access_token, $item_id, 'readd');
+    }
+
+
+
+    /**
+     * Mark as bookmark as a favorite
+     *
+     * @param  string $consumer_key
+     * @param  string $access_token
+     * @param  int $item_id
+     */
+    public function favorite($consumer_key, $access_token, $item_id)
+    {
+        return self::sendSingle($consumer_key, $access_token, $item_id, 'favorite');
+    }
+
+
+
+    /**
+     * Unmark as bookmark as a favorite
+     *
+     * @param  string $consumer_key
+     * @param  string $access_token
+     * @param  int $item_id
+     */
+    public function unfavorite($consumer_key, $access_token, $item_id)
+    {
+        return self::sendSingle($consumer_key, $access_token, $item_id, 'unfavorite');
+    }
+
+
+
+    /**
+     * Remove a particular bookmark
+     *
+     * @param  string $consumer_key
+     * @param  string $access_token
+     * @param  int $item_id
+     */
+    public function delete($consumer_key, $access_token, $item_id)
+    {
+        return self::sendSingle($consumer_key, $access_token, $item_id, 'delete');
     }
 
 

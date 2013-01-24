@@ -9,7 +9,7 @@ use Illuminate\Support\ServiceProvider;
  * https://github.com/duellsy/pockpack
  *
  * @package    Pockpack
- * @version    1.0
+ * @version    1.1
  * @author     Chris Duell
  * @license    MIT
  * @copyright  (c) 2013 Chris Duell
