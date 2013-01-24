@@ -170,7 +170,8 @@ class Pockpack
         $actions = array(
             array(
                 'action'        => $action,
-                'item_id'       => $item_id
+                'item_id'       => $item_id,
+                'time'          => time()
             )
         );
 
