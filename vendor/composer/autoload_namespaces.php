@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Duellsy\\Getpocket' => $baseDir . '/src/',
+    'Duellsy\\Pockpack' => $baseDir . '/src/',
 );

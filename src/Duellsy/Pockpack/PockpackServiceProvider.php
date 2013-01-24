@@ -1,22 +1,22 @@
-<?php namespace Duellsy\Getpocket;
+<?php namespace Duellsy\Pockpack;
 
 use Illuminate\Support\ServiceProvider;
 
 /**
- * The Getpocket package is a quick wrap to make connecting and
+ * The Pockpack package is a quick wrap to make connecting and
  * consuming the pocket API much simpler and quicker to get up and running.
  * For information / documentation on using this package, please refer to:
- * https://github.com/duellsy/getpocket
+ * https://github.com/duellsy/pockpack
  *
- * @package    Getpocket
+ * @package    Pockpack
  * @version    1.0
  * @author     Chris Duell
  * @license    MIT
  * @copyright  (c) 2013 Chris Duell
- * @link       https://github.com/duellsy/getpocket
+ * @link       https://github.com/duellsy/pockpack
  */
 
-class GetpocketServiceProvider extends ServiceProvider {
+class PockpackServiceProvider extends ServiceProvider {
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -32,7 +32,7 @@ class GetpocketServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('duellsy/getpocket');
+		$this->package('duellsy/pockpack');
 	}
 
 	/**
@@ -42,9 +42,9 @@ class GetpocketServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app['getpocket'] = $this->app->share(function($app)
+		$this->app['pockpack'] = $this->app->share(function($app)
         {
-            return new Getpocket;
+            return new Pockpack;
         });
 	}
 

@@ -1,9 +1,9 @@
 {
-    "name": "duellsy/getpocket",
+    "name": "duellsy/pockpack",
     "type": "library",
     "license": "MIT",
     "description": "Package to handle communication with GetPocket.com API neatly.",
-    "keywords": ["pocket", "getpocket", "get pocket", "read it later", "readitlater"],
+    "keywords": ["pocket", "getpocket", "get pocket", "read it later", "readitlater", "pockpack"],
     "authors": [
         {
             "name": "Chris Duell",
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Duellsy\\Getpocket": "src/"
+            "Duellsy\\Pockpack": "src/"
         }
     },
     "minimum-stability": "dev"

@@ -1,21 +1,21 @@
-<?php namespace Duellsy\Getpocket;
+<?php namespace Duellsy\Pockpack;
 
 use Guzzle\Http\Client;
 
 /**
- * The Getpocket package is a quick wrap to make connecting and
+ * The Pockpack package is a quick wrap to make connecting and
  * consuming the pocket API much simpler and quicker to get up and running.
  * For information / documentation on using this package, please refer to:
  * https://github.com/duellsy/getpocket
  *
- * @package    Getpocket
+ * @package    Pockpack
  * @version    1.0
  * @author     Chris Duell
  * @license    MIT
  * @copyright  (c) 2013 Chris Duell
  * @link       https://github.com/duellsy/getpocket
  */
-class Getpocket
+class Pockpack
 {
 
     const BASE_URL = 'https://getpocket.com';
