@@ -6,5 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Component\\EventDispatcher\\' => $vendorDir . '/symfony/event-dispatcher/',
+    'Mockery' => $vendorDir . '/mockery/mockery/library/',
+    'Guzzle\\Tests' => $vendorDir . '/guzzle/guzzle/tests/',
+    'Guzzle' => $vendorDir . '/guzzle/guzzle/src/',
     'Duellsy\\Pockpack' => $baseDir . '/src/',
 );

@@ -18,7 +18,10 @@
     "autoload": {
         "psr-0": {
             "Duellsy\\Pockpack": "src/"
-        }
+        },
+        "classmap": [
+            "src/Duellsy/Pockpack/Exceptions.php"
+        ]
     },
     "minimum-stability": "dev"
 }

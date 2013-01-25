@@ -6,4 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Duellsy\\Pockpack\\EmptyConstructorException' => $baseDir . '/src/Duellsy/Pockpack/Exceptions.php',
+    'Duellsy\\Pockpack\\InvalidItemTypeException' => $baseDir . '/src/Duellsy/Pockpack/Exceptions.php',
+    'Duellsy\\Pockpack\\NoConsumerKeyException' => $baseDir . '/src/Duellsy/Pockpack/Exceptions.php',
+    'Duellsy\\Pockpack\\NoItemException' => $baseDir . '/src/Duellsy/Pockpack/Exceptions.php',
+    'Duellsy\\Pockpack\\NoPockpackQueueException' => $baseDir . '/src/Duellsy/Pockpack/Exceptions.php',
 );

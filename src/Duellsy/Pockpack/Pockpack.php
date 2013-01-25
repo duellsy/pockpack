@@ -1,6 +1,8 @@
 <?php namespace Duellsy\Pockpack;
 
 use Guzzle\Http\Client;
+use Duellsy\Pockpack\EmptyConstructorException;
+use Duellsy\Pockpack\NoPockpackQueueException;
 
 /**
  * The Pockpack package is a quick wrap to make connecting and
@@ -9,7 +11,7 @@ use Guzzle\Http\Client;
  * https://github.com/duellsy/pockpack
  *
  * @package    Pockpack
- * @version    1.1
+ * @version    2.0.0
  * @author     Chris Duell
  * @license    MIT
  * @copyright  (c) 2013 Chris Duell
@@ -18,78 +20,57 @@ use Guzzle\Http\Client;
 class Pockpack
 {
 
+    private $consumer_key = '';
+    private $access_token = '';
+
     const BASE_URL = 'https://getpocket.com';
 
-    /**
-     * Give external access to the base URL
-     */
-    public function getBaseUrl()
+    public function __construct($consumer_key = null, $access_token = null)
     {
-        return self::BASE_URL;
+
+        if( is_null($consumer_key) OR is_null($access_token) OR $consumer_key == '' OR $access_token == '') {
+            throw new EmptyConstructorException("consumer_key and access_token are required params when initiating Pockpack");
+        }
+
+        $this->consumer_key = $consumer_key;
+        $this->access_token = $access_token;
+
     }
 
 
-
     /**
-     * Get the initial request token to kick off the OAuth process
+     * Responsible for sending the request to the pocket API
      *
      * @param  string $consumer_key
+     * @param  string $access_token
+     * @param  array $actions
      */
-    public function connect($consumer_key)
+    public function send(PockpackQueue $queue = null)
     {
 
-        $params = array(
-            'consumer_key'  => $consumer_key,
-            'redirect_uri'  => \URL::to('pocket/receiveToken')
-        );
+        if( is_null($queue) ) {
+            throw new NoPockpackQueueException();
+        }
+
+        $actions = json_encode($queue->getActions());
+        $actions = urlencode($actions);
 
         $client = new Client(self::BASE_URL);
-        $request = $client->post('/v3/oauth/request');
-        $request->getParams()->set('redirect.strict', true);
-        $request->setHeader('Content-Type', 'application/json; charset=UTF8');
-        $request->setHeader('X-Accept', 'application/json');
-        $request->setBody(json_encode($params));
-        $response = $request->send();
-
-        $data = json_decode($response->getBody());
-
-        $request_token = $data->code;
-
-        return $request_token;
-    }
-
-
-
-    /**
-     * Grab an access token from the pocket API, after sending it
-     * the consumer key and request token from earlier
-     *
-     * @param  string $consumer_key
-     * @param  string $request_token
-     */
-    public function receiveToken($consumer_key, $request_token)
-    {
-
-        $params = array(
-            'consumer_key'  => $consumer_key,
-            'code'  => $request_token
+        $request = $client->get(
+            '/v3/send?actions=' . $actions .
+            '&consumer_key=' . $this->consumer_key .
+            '&access_token=' . $this->access_token
         );
 
-        $client = new Client(self::BASE_URL);
-        $request = $client->post('/v3/oauth/authorize');
-        $request->getParams()->set('redirect.strict', true);
-        $request->setHeader('Content-Type', 'application/json; charset=UTF8');
-        $request->setHeader('X-Accept', 'application/json');
-        $request->setBody(json_encode($params));
         $response = $request->send();
 
-        $data = json_decode($response->getBody());
+        // remove any items from the queue
+        $queue->clear();
 
-        $access_token = $data->access_token;
-
-        return $access_token;
+        return json_decode($response->getBody());
 
     }
+
 
 
 
@@ -99,12 +80,12 @@ class Pockpack
      * @param  string $consumer_key
      * @param  string $access_token
      */
-    public function retrieve($consumer_key, $access_token, $options = array())
+    public function retrieve($options = array())
     {
 
         $params = array(
-            'consumer_key'  => $consumer_key,
-            'access_token'  => $access_token
+            'consumer_key'  => $this->consumer_key,
+            'access_token'  => $this->access_token
         );
 
         // combine the creds with any options sent
@@ -121,134 +102,5 @@ class Pockpack
         return json_decode($response->getBody());
 
     }
-
-
-
-    /**
-     * Responsible for sending the request to the pocket API
-     *
-     * @param  string $consumer_key
-     * @param  string $access_token
-     * @param  array $actions
-     */
-    public function send($consumer_key, $access_token, $actions)
-    {
-
-        $actions = json_encode($actions);
-        $actions = urlencode($actions);
-
-        $client = new Client(self::BASE_URL);
-        $request = $client->get(
-            '/v3/send?actions=' . $actions .
-            '&consumer_key=' . $consumer_key .
-            '&access_token=' . $access_token
-        );
-
-        $response = $request->send();
-
-        return json_decode($response->getBody());
-
-    }
-
-
-
-    /**
-     * All single actions are routed through this method,
-     * to wrap the request in the required format for the
-     * pocket API.
-     *
-     * Valid actions are: favorite, unfavorite, archive, readd, delete
-     *
-     * @param  string $consumer_key
-     * @param  string $access_token
-     * @param  int $item_id
-     * @param  string $action
-     */
-    public function sendSingle($consumer_key, $access_token, $item_id, $action)
-    {
-
-        $actions = array(
-            array(
-                'action'        => $action,
-                'item_id'       => $item_id,
-                'time'          => time()
-            )
-        );
-
-        return self::send($consumer_key, $access_token, $actions);
-
-    }
-
-
-
-    /**
-     * Archive a particular bookmark
-     *
-     * @param  string $consumer_key
-     * @param  string $access_token
-     * @param  int $item_id
-     */
-    public function archive($consumer_key, $access_token, $item_id)
-    {
-        return self::sendSingle($consumer_key, $access_token, $item_id, 'archive');
-    }
-
-
-
-    /**
-     * Re-add a bookmark that was previously archived
-     *
-     * @param  string $consumer_key
-     * @param  string $access_token
-     * @param  int $item_id
-     */
-    public function readd($consumer_key, $access_token, $item_id)
-    {
-        return self::sendSingle($consumer_key, $access_token, $item_id, 'readd');
-    }
-
-
-
-    /**
-     * Mark as bookmark as a favorite
-     *
-     * @param  string $consumer_key
-     * @param  string $access_token
-     * @param  int $item_id
-     */
-    public function favorite($consumer_key, $access_token, $item_id)
-    {
-        return self::sendSingle($consumer_key, $access_token, $item_id, 'favorite');
-    }
-
-
-
-    /**
-     * Unmark as bookmark as a favorite
-     *
-     * @param  string $consumer_key
-     * @param  string $access_token
-     * @param  int $item_id
-     */
-    public function unfavorite($consumer_key, $access_token, $item_id)
-    {
-        return self::sendSingle($consumer_key, $access_token, $item_id, 'unfavorite');
-    }
-
-
-
-    /**
-     * Remove a particular bookmark
-     *
-     * @param  string $consumer_key
-     * @param  string $access_token
-     * @param  int $item_id
-     */
-    public function delete($consumer_key, $access_token, $item_id)
-    {
-        return self::sendSingle($consumer_key, $access_token, $item_id, 'delete');
-    }
-
-
 
 }

@@ -46,6 +46,17 @@ class PockpackServiceProvider extends ServiceProvider {
         {
             return new Pockpack;
         });
+
+		$this->app['pockpack.auth'] = $this->app->share(function($app)
+        {
+            return new PockpackAuth;
+        });
+
+		$this->app['pockpack.queue'] = $this->app->share(function($app)
+        {
+            return new PockpackQueue;
+        });
+
 	}
 
 	/**
