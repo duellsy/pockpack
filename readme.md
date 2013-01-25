@@ -12,15 +12,16 @@ Pockpack is installable via [composer](http://getcomposer.org/doc/00-intro.md), 
 
 Add the following to the `require` section of your projects composer.json file:
 ```
-    "duellsy/pockpack": "1.*"
+    "duellsy/pockpack": "2.*"
 ```
 
-## Auth
+## Authenticate
 
 ### Get request token
 
 ```
-$request_token = Pockpack::connect($consumer_key);
+$pockpath_auth = Duellsy\Pockpack\PockpackAuth::connect();
+$request_token = $pockpath_auth->connect($consumer_key);
 ```
 
 ### Redirect the user to pockets auth page
@@ -32,17 +33,19 @@ https://getpocket.com/auth/authorize?request_token=YOUR_REQUEST_TOKEN&redirect_u
 ### Get users access token
 
 ```
-$access_token = Pockpack::receiveToken($consumer_key, $request_token);
+$pockpack = new Duellsy\Pockpack\PockpackAuth();
+$access_token = $pockpack->receiveToken($consumer_key, $request_token);
 ```
 
-## Actions
+## Get reading list
 
 ### Retreive reading list
 This will return a full list of all active (unarchived) bookmarks, optionally
 you can have it also return extra information such as images
 
 ```
-$reading_list = Pockpack::retrieve($consumer_key, $access_token, [$options = array()]);
+$pockpack = new Duellsy\Pockpack\Pockpack($consumer_key, $access_token);
+$list = $pockpack->retrieve($options);
 ```
 
 The options array allows you to control exactly what is returned from the API.
@@ -65,34 +68,53 @@ $options = array(
 );
 ```
 
+## Modify existing bookmark
+
+The main flow to modify a bookmark is as follows
+
+```
+$pockpack = new Duellsy\Pockpack\Pockpack($pocket_consumer_key, $pocket_access_token);
+$pockpack_q = new Duellsy\Pockpack\PockpackQueue();
+
+$pockpack_q->favorite($item_id);
+
+$pockpack->send($pockpack_q);
+```
+
+You first need to create the pockpack connection, then add something to the
+queue, and finally send the queue to pocket.
+
+You can add as many items to the queue before sending, to send in bulk to
+keep things fast.
+
 ### Archive bookmark
 
 ```
-Pockpack::archive($consumer_key, $access_token, $item_id);
+$pockpack_q->archive($item_id);
 ```
 
 ### Re-add bookmark
 
 ```
-Pockpack::readd($consumer_key, $access_token, $item_id);
+$pockpack_q->readd($item_id);
 ```
 
 ### Favorite bookmark
 
 ```
-Pockpack::favorite($consumer_key, $access_token, $item_id);
+$pockpack_q->favorite($item_id);
 ```
 
 ### Unfavorite bookmark
 
 ```
-Pockpack::unfavorite($consumer_key, $access_token, $item_id);
+$pockpack_q->unfavorite($item_id);
 ```
 
 ### Delete bookmark
 
 ```
-Pockpack::delete($consumer_key, $access_token, $item_id);
+$pockpack_q->delete($item_id);
 ```
 
 
@@ -100,7 +122,5 @@ Pockpack::delete($consumer_key, $access_token, $item_id);
 
 Contributions are encouraged and welcome; to keep things organised, all bugs and requests should be
 opened in the github issues tab for the main project, at [duellsy/pockpack/issues](https://github.com/duellsy/pockpack/issues)
-
-All issues should have either [bug], [request], or [suggestion] prefixed in the title.
 
 All pull requests should be made to the develop branch, so they can be tested before being merged into the master branch.
