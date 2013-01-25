@@ -12,15 +12,24 @@ Pockpack is installable via [composer](http://getcomposer.org/doc/00-intro.md), 
 
 Add the following to the `require` section of your projects composer.json file:
 ```
-    "duellsy/pockpack": "2.*"
+"duellsy/pockpack": "2.*"
 ```
+
+In files that you want to use the Pockpack classes, be sure to add the namespaces
+you're going to use to the top of the file similar to the following,
+so your code can reference the classes without issue
+````
+use Duellsy\Pockpack\Pockpack;
+use Duellsy\Pockpack\PockpackAuth;
+use Duellsy\Pockpack\PockpackQueue;
+````
 
 ## Authenticate
 
 ### Get request token
 
 ```
-$pockpath_auth = Duellsy\Pockpack\PockpackAuth::connect();
+$pockpath_auth = PockpackAuth::connect();
 $request_token = $pockpath_auth->connect($consumer_key);
 ```
 
@@ -33,7 +42,7 @@ https://getpocket.com/auth/authorize?request_token=YOUR_REQUEST_TOKEN&redirect_u
 ### Get users access token
 
 ```
-$pockpack = new Duellsy\Pockpack\PockpackAuth();
+$pockpack = new PockpackAuth();
 $access_token = $pockpack->receiveToken($consumer_key, $request_token);
 ```
 
@@ -44,7 +53,7 @@ This will return a full list of all active (unarchived) bookmarks, optionally
 you can have it also return extra information such as images
 
 ```
-$pockpack = new Duellsy\Pockpack\Pockpack($consumer_key, $access_token);
+$pockpack = new Pockpack($consumer_key, $access_token);
 $list = $pockpack->retrieve($options);
 ```
 
@@ -76,8 +85,8 @@ $link_info = array(
     'url'       => 'http://example.com'
 );
 
-$pockpack = new Duellsy\Pockpack\Pockpack($pocket_consumer_key, $pocket_access_token);
-$pockpack_q = new Duellsy\Pockpack\PockpackQueue();
+$pockpack = new Pockpack($pocket_consumer_key, $pocket_access_token);
+$pockpack_q = new PockpackQueue();
 
 $pockpack_q->add($link_info);
 $pockpack->send($pockpack_q);
@@ -96,8 +105,8 @@ The array that is sent to the add method can contain the following information:
 The main flow to modify a bookmark is as follows
 
 ```
-$pockpack = new Duellsy\Pockpack\Pockpack($pocket_consumer_key, $pocket_access_token);
-$pockpack_q = new Duellsy\Pockpack\PockpackQueue();
+$pockpack = new Pockpack($pocket_consumer_key, $pocket_access_token);
+$pockpack_q = new PockpackQueue();
 
 $pockpack_q->favorite($item_id);
 
