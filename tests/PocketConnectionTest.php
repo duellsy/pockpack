@@ -118,7 +118,7 @@ class PocketConnectionTest extends PHPUnit_Framework_TestCase
      */
     public function testPockpackAuthConnectException()
     {
-        $pockpackauth = new Duellsy\Pockpack\Pockpackauth();
+        $pockpackauth = new Duellsy\Pockpack\PockpackAuth();
         $pockpackauth->connect();
     }
 
