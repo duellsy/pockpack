@@ -23,7 +23,7 @@
             "src/Duellsy/Pockpack/Exceptions.php",
             "src/Duellsy/Pockpack/Pockpack.php",
             "src/Duellsy/Pockpack/PockpackAuth.php",
-            "src/Duellsy/Pockpack/PockpackQueue.php",
+            "src/Duellsy/Pockpack/PockpackQueue.php"
         ]
     },
     "minimum-stability": "dev"
