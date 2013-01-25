@@ -2,7 +2,7 @@
 
 use \Mockery as m;
 
-class PocketConnectionTest extends PHPUnit_Framework_TestCase
+class PocketQueueTest extends PHPUnit_Framework_TestCase
 {
 
 
@@ -17,6 +17,20 @@ class PocketConnectionTest extends PHPUnit_Framework_TestCase
     }
 
 
+    public function testAddBookmarkAddsToQueue()
+    {
+
+        $pockpack_q = new Duellsy\Pockpack\PockpackQueue();
+        $pockpack_q->add(array(
+            'url'   => 'http://www.example.com'
+        ));
+
+        $this->assertEquals(1, sizeof($pockpack_q->getActions()));
+
+    }
+
+
+
     public function testFavoriteBookmarkAddsToQueue()
     {
 
@@ -26,6 +40,7 @@ class PocketConnectionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, sizeof($pockpack_q->getActions()));
 
     }
+
 
 
     public function testUnFavoriteBookmarkAddsToQueue()
@@ -99,60 +114,6 @@ class PocketConnectionTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(0, sizeof($pockpack_q->getActions()));
 
-    }
-
-
-
-    /**
-     * @expectedException Duellsy\Pockpack\EmptyConstructorException
-     */
-    public function testPockpackConstructorRequiredParamsException()
-    {
-        $pockpack = new Duellsy\Pockpack\Pockpack();
-    }
-
-
-
-    /**
-     * @expectedException Duellsy\Pockpack\NoConsumerKeyException
-     */
-    public function testPockpackAuthConnectException()
-    {
-        $pockpackauth = new Duellsy\Pockpack\PockpackAuth();
-        $pockpackauth->connect();
-    }
-
-
-
-    /**
-     * @expectedException Duellsy\Pockpack\NoItemException
-     */
-    public function testNoItemException()
-    {
-        $pockpack_q = new Duellsy\Pockpack\PockpackQueue();
-        $pockpack_q->favorite();
-    }
-
-
-
-    /**
-     * @expectedException Duellsy\Pockpack\InvalidItemTypeException
-     */
-    public function testInvalidItemTypeException()
-    {
-        $pockpack_q = new Duellsy\Pockpack\PockpackQueue();
-        $pockpack_q->favorite("abc");
-    }
-
-
-
-    /**
-     * @expectedException Duellsy\Pockpack\NoPockpackQueueException
-     */
-    public function testNoPockpackQueueException()
-    {
-        $pockpack = new Duellsy\Pockpack\Pockpack("fake_key", "fake_token");
-        $pockpack->send();
     }
 
 

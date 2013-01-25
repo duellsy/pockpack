@@ -68,6 +68,29 @@ $options = array(
 );
 ```
 
+## Add new bookmark
+
+A simple example of adding a bookmark to your reading list:
+```
+$link_info = array(
+    'url'       => 'http://example.com'
+);
+
+$pockpack = new Duellsy\Pockpack\Pockpack($pocket_consumer_key, $pocket_access_token);
+$pockpack_q = new Duellsy\Pockpack\PockpackQueue();
+
+$pockpack_q->add($link_info);
+$pockpack->send($pockpack_q);
+```
+
+The array that is sent to the add method can contain the following information:
+- *item_id* (integer; If you are overwriting a link)
+- *ref_id* (integer; A Twitter status id; this is used to show tweet attribution)
+- *tags* (array; A list of tags you want to add to this bookmark)
+- *time* (timestamp; This is automatically added by the PockpackQueue class)
+- *title* (string; An optional title if you want to control it)
+- *url* (string; The URL of the item)
+
 ## Modify existing bookmark
 
 The main flow to modify a bookmark is as follows

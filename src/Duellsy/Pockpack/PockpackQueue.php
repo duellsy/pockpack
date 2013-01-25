@@ -56,7 +56,7 @@ class PockpackQueue
      * @param  int $item_id
      * @param  string $action
      */
-    public function add($item_id = null, $action = null)
+    public function queue($item_id = null, $action = null)
     {
 
         if( is_null($item_id) ) {
@@ -83,9 +83,36 @@ class PockpackQueue
      *
      * @param  int $item_id
      */
+    public function add($link_info = array())
+    {
+
+        if( ! isset($link_info['url']) ) {
+            throw new NoItemException("The url is required when adding a link");
+        }
+
+        $base_info  = array(
+            'action'        => 'add',
+            'time'          => time()
+        );
+
+        $link_info = array_merge($base_info, $link_info);
+
+        $this->actions[] = $link_info;
+
+        return true;
+
+    }
+
+
+
+    /**
+     * Archive a particular bookmark
+     *
+     * @param  int $item_id
+     */
     public function archive($item_id = null)
     {
-        return self::add($item_id, 'archive');
+        return self::queue($item_id, 'archive');
     }
 
 
@@ -97,7 +124,7 @@ class PockpackQueue
      */
     public function readd($item_id = null)
     {
-        return self::add($item_id, 'readd');
+        return self::queue($item_id, 'readd');
     }
 
 
@@ -109,7 +136,7 @@ class PockpackQueue
      */
     public function favorite($item_id = null)
     {
-        return self::add($item_id, 'favorite');
+        return self::queue($item_id, 'favorite');
     }
 
 
@@ -121,7 +148,7 @@ class PockpackQueue
      */
     public function unfavorite($item_id = null)
     {
-        return self::add($item_id, 'unfavorite');
+        return self::queue($item_id, 'unfavorite');
     }
 
 
@@ -133,7 +160,7 @@ class PockpackQueue
      */
     public function delete($item_id = null)
     {
-        return self::add($item_id, 'delete');
+        return self::queue($item_id, 'delete');
     }
 
 
