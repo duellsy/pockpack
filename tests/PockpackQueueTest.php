@@ -1,19 +1,15 @@
 <?php
 
-use \Mockery as m;
-
 class PocketQueueTest extends PHPUnit_Framework_TestCase
 {
 
 
     public function setUp()
     {
-
     }
 
     public function tearDown()
     {
-        m::close();
     }
 
 

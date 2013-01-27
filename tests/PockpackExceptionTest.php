@@ -1,7 +1,5 @@
 <?php
 
-use \Mockery as m;
-
 class PocketExceptionTest extends PHPUnit_Framework_TestCase
 {
 
@@ -13,7 +11,6 @@ class PocketExceptionTest extends PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        m::close();
     }
 
 
