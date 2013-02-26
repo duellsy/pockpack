@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Pockpack by duellsy</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Pockpack</h1>
+        <h2>Package to connect and grab information from the Pocket API (formerly read it later)</h2>
+        <a href="https://github.com/duellsy/pockpack" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>PockPack docs</h1>
+
+<p>This package is for connecting to the <a href="http://getpocket.com/developer/">getpocket API</a></p>
+
+<p>You'll need to register an app with pocket, and use the generated tokens provided in order for you to be able to connect to the API.</p>
+
+<p><a href="https://travis-ci.org/duellsy/pockpack"><img src="https://travis-ci.org/duellsy/pockpack.png?branch=master" alt="Build Status"></a></p>
+
+<h2>Installation</h2>
+
+<p>Pockpack is installable via <a href="http://getcomposer.org/doc/00-intro.md">composer</a>, the details are on <a href="https://packagist.org/packages/duellsy/pockpack">packagist, here.</a></p>
+
+<p>Add the following to the <code>require</code> section of your projects composer.json file:</p>
+
+<pre><code>"duellsy/pockpack": "2.*"
+</code></pre>
+
+<p>In files that you want to use the Pockpack classes, be sure to add the namespaces
+you're going to use to the top of the file similar to the following,
+so your code can reference the classes without issue</p>
+
+<pre><code>use Duellsy\Pockpack\Pockpack;
+use Duellsy\Pockpack\PockpackAuth;
+use Duellsy\Pockpack\PockpackQueue;
+</code></pre>
+
+<h2>Authenticate</h2>
+
+<h3>Get request token</h3>
+
+<pre><code>$pockpath_auth = PockpackAuth::connect();
+$request_token = $pockpath_auth-&gt;connect($consumer_key);
+</code></pre>
+
+<h3>Redirect the user to pockets auth page</h3>
+
+<pre><code>https://getpocket.com/auth/authorize?request_token=YOUR_REQUEST_TOKEN&amp;redirect_uri=YOUR_REDIRECT_URI
+</code></pre>
+
+<h3>Get users access token</h3>
+
+<pre><code>$pockpack = new PockpackAuth();
+$access_token = $pockpack-&gt;receiveToken($consumer_key, $request_token);
+</code></pre>
+
+<h2>Get reading list</h2>
+
+<h3>Retreive reading list</h3>
+
+<p>This will return a full list of all active (unarchived) bookmarks, optionally
+you can have it also return extra information such as images</p>
+
+<pre><code>$pockpack = new Pockpack($consumer_key, $access_token);
+$list = $pockpack-&gt;retrieve($options);
+</code></pre>
+
+<p>The options array allows you to control exactly what is returned from the API.
+For the full list of options, please check 'Optional Parameters' section of <a href="http://getpocket.com/developer/docs/v3/retrieve">the pocket retrieve API</a> (you can also see an example JSON response on this page)</p>
+
+<p>Example 1: show all favorited bookmarks, complete with images</p>
+
+<pre><code>$options = array(
+    'state'         =&gt; 'all',
+    'favorite'      =&gt; 1,
+    'detailType'    =&gt; 'complete'
+);
+</code></pre>
+
+<p>Example 2: show only unread bookmarks, complete with image</p>
+
+<pre><code>$options = array(
+    'state'         =&gt; 'favorite',
+    'detailType'    =&gt; 'complete'
+);
+</code></pre>
+
+<h2>Add new bookmark</h2>
+
+<p>A simple example of adding a bookmark to your reading list:</p>
+
+<pre><code>$link_info = array(
+    'url'       =&gt; 'http://example.com'
+);
+
+$pockpack = new Pockpack($pocket_consumer_key, $pocket_access_token);
+$pockpack_q = new PockpackQueue();
+
+$pockpack_q-&gt;add($link_info);
+$pockpack-&gt;send($pockpack_q);
+</code></pre>
+
+<p>The array that is sent to the add method can contain the following information:</p>
+
+<ul>
+<li>
+<em>item_id</em> (integer; If you are overwriting a link)</li>
+<li>
+<em>ref_id</em> (integer; A Twitter status id; this is used to show tweet attribution)</li>
+<li>
+<em>tags</em> (array; A list of tags you want to add to this bookmark)</li>
+<li>
+<em>time</em> (timestamp; This is automatically added by the PockpackQueue class)</li>
+<li>
+<em>title</em> (string; An optional title if you want to control it)</li>
+<li>
+<em>url</em> (string; The URL of the item)</li>
+</ul><h2>Modify existing bookmark</h2>
+
+<p>The main flow to modify a bookmark is as follows</p>
+
+<pre><code>$pockpack = new Pockpack($pocket_consumer_key, $pocket_access_token);
+$pockpack_q = new PockpackQueue();
+
+$pockpack_q-&gt;favorite($item_id);
+
+$pockpack-&gt;send($pockpack_q);
+</code></pre>
+
+<p>You first need to create the pockpack connection, then add something to the
+queue, and finally send the queue to pocket.</p>
+
+<p>You can add as many items to the queue before sending, to send in bulk to
+keep things fast.</p>
+
+<h3>Archive bookmark</h3>
+
+<pre><code>$pockpack_q-&gt;archive($item_id);
+</code></pre>
+
+<h3>Re-add bookmark</h3>
+
+<pre><code>$pockpack_q-&gt;readd($item_id);
+</code></pre>
+
+<h3>Favorite bookmark</h3>
+
+<pre><code>$pockpack_q-&gt;favorite($item_id);
+</code></pre>
+
+<h3>Unfavorite bookmark</h3>
+
+<pre><code>$pockpack_q-&gt;unfavorite($item_id);
+</code></pre>
+
+<h3>Delete bookmark</h3>
+
+<pre><code>$pockpack_q-&gt;delete($item_id);
+</code></pre>
+
+<h2>Contributing</h2>
+
+<p>Contributions are encouraged and welcome; to keep things organised, all bugs and requests should be
+opened in the github issues tab for the main project, at <a href="https://github.com/duellsy/pockpack/issues">duellsy/pockpack/issues</a></p>
+
+<p>All pull requests should be made to the develop branch, so they can be tested before being merged into the master branch.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/duellsy/pockpack/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/duellsy/pockpack/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/duellsy/pockpack"></a> is maintained by <a href="https://github.com/duellsy">duellsy</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
