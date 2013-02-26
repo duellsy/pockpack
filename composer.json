@@ -4,6 +4,7 @@
     "license": "MIT",
     "description": "Package to handle communication with GetPocket.com API neatly.",
     "keywords": ["pocket", "getpocket", "get pocket", "read it later", "readitlater", "pockpack"],
+    "homepage": "http://duellsy.github.com/pockpack/",
     "authors": [
         {
             "name": "Chris Duell",
