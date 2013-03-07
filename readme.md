@@ -1,6 +1,6 @@
-# PockPack docs
+# Pocket API - PockPack docs
 
-This package is for connecting to the [getpocket API](http://getpocket.com/developer/)
+This package is for connecting to the Pocket API. [check out their docs here](http://getpocket.com/developer/)
 
 You'll need to register an app with pocket, and use the generated tokens provided in order for you to be able to connect to the API.
 
