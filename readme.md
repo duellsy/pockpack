@@ -29,7 +29,7 @@ use Duellsy\Pockpack\PockpackQueue;
 ### Get request token
 
 ```
-$pockpath_auth = PockpackAuth::connect();
+$pockpath_auth = new PockpackAuth();
 $request_token = $pockpath_auth->connect($consumer_key);
 ```
 

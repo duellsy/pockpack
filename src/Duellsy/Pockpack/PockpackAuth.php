@@ -44,7 +44,7 @@ class PockpackAuth
 
         $params = array(
             'consumer_key'  => $consumer_key,
-            'redirect_uri'  => \URL::to('pocket/receiveToken')
+            'redirect_uri'  => '.'
         );
 
         $client = new Client(self::BASE_URL);
