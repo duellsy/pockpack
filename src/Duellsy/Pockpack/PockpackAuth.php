@@ -96,6 +96,38 @@ class PockpackAuth
 
     }
 
+    /**
+     * Grab an access token and the username from the pocket API, after sending it
+     * the consumer key and request token from earlier
+     *
+     * @param  string $consumer_key
+     * @param  string $request_token
+     */
+    public function receiveTokenAndUsername($consumer_key, $request_token)
+    {
+
+        $params = array(
+            'consumer_key'  => $consumer_key,
+            'code'  => $request_token
+        );
+
+        $client = new Client(self::BASE_URL);
+        $request = $client->post('/v3/oauth/authorize');
+        $request->getParams()->set('redirect.strict', true);
+        $request->setHeader('Content-Type', 'application/json; charset=UTF8');
+        $request->setHeader('X-Accept', 'application/json');
+        $request->setBody(json_encode($params));
+        $response = $request->send();
+
+        $data = json_decode($response->getBody());
+        $returnData['access_token'] = $data->access_token;
+        $returnData['username'] = $data->username;
+        
+
+        return $returnData;
+
+    }
+
 
 
 }
