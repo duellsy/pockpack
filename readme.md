@@ -46,6 +46,15 @@ $pockpack = new PockpackAuth();
 $access_token = $pockpack->receiveToken($consumer_key, $request_token);
 ```
 
+### Get users access token and username
+
+```
+$pockpack = new PockpackAuth();
+$data = $pockpack->receiveTokenAndUsername($consumer_key, $request_token);
+$access_token = $data['access_token'];
+$username = $data['username'];
+```
+
 ## Get reading list
 
 ### Retreive reading list
