@@ -74,9 +74,8 @@ class PockpackAuth
      */
     public function receiveToken($consumer_key, $request_token)
     {
-
         $pocketData = $this->convertRequestToken($consumer_key, $request_token);
-        
+
         $access_token = $pocketData->access_token;
 
         return $access_token;
@@ -92,7 +91,6 @@ class PockpackAuth
      */
     public function receiveTokenAndUsername($consumer_key, $request_token)
     {
-
         $pocketData = $this->convertRequestToken($consumer_key, $request_token);
 
         $returnData['access_token'] = $pocketData->access_token;
