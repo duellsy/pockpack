@@ -46,8 +46,7 @@ class PockpackAuth
             'redirect_uri'  => '.'
         );
 
-        $client = $this->getClient();
-        $request = $client->post('/v3/oauth/request');
+        $request = $this->getClient()->post('/v3/oauth/request');
         $request->getParams()->set('redirect.strict', true);
         $request->setHeader('Content-Type', 'application/json; charset=UTF8');
         $request->setHeader('X-Accept', 'application/json');
@@ -108,8 +107,7 @@ class PockpackAuth
             'code'  => $request_token
         );
 
-        $client = $this->getClient();
-        $request = $client->post('/v3/oauth/authorize');
+        $request = $this->getClient()->post('/v3/oauth/authorize');
         $request->getParams()->set('redirect.strict', true);
         $request->setHeader('Content-Type', 'application/json; charset=UTF8');
         $request->setHeader('X-Accept', 'application/json');

@@ -39,7 +39,6 @@ class Pockpack
      */
     public function send(PockpackQueue $queue = null)
     {
-
         if( is_null($queue) ) {
             throw new NoPockpackQueueException();
         }
@@ -47,12 +46,14 @@ class Pockpack
         $actions = json_encode($queue->getActions());
         $actions = urlencode($actions);
 
-        $client = $this->getClient();
-        $request = $client->get(
-            '/v3/send?actions=' . $actions .
-            '&consumer_key=' . $this->consumer_key .
-            '&access_token=' . $this->access_token
+        $params = array(
+            'actions'       => $actions,
+            'consumer_key'  => $this->consumer_key,
+            'access_token'  => $this->access_token
         );
+
+        $request = $this->getClient()->get('/v3/send');
+        $request->setBody(json_encode($params));
 
         $response = $request->send();
 
@@ -60,7 +61,6 @@ class Pockpack
         $queue->clear();
 
         return json_decode($response->getBody());
-
     }
 
     /**
@@ -71,7 +71,6 @@ class Pockpack
      */
     public function retrieve($options = array())
     {
-
         $params = array(
             'consumer_key'  => $this->consumer_key,
             'access_token'  => $this->access_token
@@ -80,8 +79,7 @@ class Pockpack
         // combine the creds with any options sent
         $params = array_merge($params, $options);
 
-        $client = $this->getClient();
-        $request = $client->post('/v3/get');
+        $request = $this->getClient()->post('/v3/get');
         $request->getParams()->set('redirect.strict', true);
         $request->setHeader('Content-Type', 'application/json; charset=UTF8');
         $request->setHeader('X-Accept', 'application/json');
@@ -89,7 +87,6 @@ class Pockpack
         $response = $request->send();
 
         return json_decode($response->getBody());
-
     }
 
     /**
