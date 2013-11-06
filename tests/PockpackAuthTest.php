@@ -9,7 +9,7 @@ class PocketAuthTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->pockpack_auth = new Duellsy\Pockpack\Pockpack('fake_consumer_key', 'fake_access_token');
+        $this->pockpack_auth = new Duellsy\Pockpack\PockpackAuth;
     }
 
     /**
@@ -19,7 +19,7 @@ class PocketAuthTest extends PHPUnit_Framework_TestCase
     {
         $this->setPocketResponse(new Response(404));
 
-        $this->pockpack_auth->retrieve();
+        $this->pockpack_auth->connect('fake_consumer_key');
     }
 
     /**
