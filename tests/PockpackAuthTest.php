@@ -13,16 +13,6 @@ class PocketAuthTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Guzzle\Http\Exception\ClientErrorResponseException
-     */
-    public function testSimpleMocking()
-    {
-        $this->setPocketResponse(new Response(404));
-
-        $this->pockpack_auth->connect('fake_consumer_key');
-    }
-
-    /**
      * @expectedException PHPUnit_Framework_Error_Warning
      */
     public function testConnectionRequiresConsumerKey()

@@ -13,16 +13,6 @@ class PocketTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Guzzle\Http\Exception\ClientErrorResponseException
-     */
-    public function testSimpleMocking()
-    {
-        $this->setPocketResponse(new Response(404));
-
-        $this->pockpack->retrieve();
-    }
-
-    /**
      * Convieniece method to quickly mock the response from Pocket
      * 
      * @param  Response $response
