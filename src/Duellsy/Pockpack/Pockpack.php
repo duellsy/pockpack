@@ -18,18 +18,17 @@ use Duellsy\Pockpack\NoPockpackQueueException;
  */
 class Pockpack
 {
-
-    private $consumer_key = '';
-    private $access_token = '';
-
     const BASE_URL = 'https://getpocket.com';
+
+    private $consumer_key;
+    private $access_token;
+    private $client;
 
     public function __construct($consumer_key, $access_token)
     {
         $this->consumer_key = $consumer_key;
         $this->access_token = $access_token;
     }
-
 
     /**
      * Responsible for sending the request to the pocket API
@@ -48,7 +47,7 @@ class Pockpack
         $actions = json_encode($queue->getActions());
         $actions = urlencode($actions);
 
-        $client = new Client(self::BASE_URL);
+        $client = $this->getClient();
         $request = $client->get(
             '/v3/send?actions=' . $actions .
             '&consumer_key=' . $this->consumer_key .
@@ -63,9 +62,6 @@ class Pockpack
         return json_decode($response->getBody());
 
     }
-
-
-
 
     /**
      * Get a list of active bookmarks from the API
@@ -84,7 +80,7 @@ class Pockpack
         // combine the creds with any options sent
         $params = array_merge($params, $options);
 
-        $client = new Client(self::BASE_URL);
+        $client = $this->getClient();
         $request = $client->post('/v3/get');
         $request->getParams()->set('redirect.strict', true);
         $request->setHeader('Content-Type', 'application/json; charset=UTF8');
@@ -94,6 +90,23 @@ class Pockpack
 
         return json_decode($response->getBody());
 
+    }
+
+    /**
+     * Get the client used to query Pocket.
+     * Allows the client dependency to be injected at runtime for unit tests.
+     *
+     * @return Client HTTP Client used to communicate with Pocket
+     */
+    private function getClient()
+    {
+        if ( $this->client ) {
+            return $this->client;
+        }
+
+        $this->client = new Client(self::BASE_URL);
+
+        return $client;
     }
 
 }
