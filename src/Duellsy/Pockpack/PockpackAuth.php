@@ -2,6 +2,7 @@
 
 use Guzzle\Http\Client;
 use Duellsy\Pockpack\NoConsumerKeyException;
+
 /**
  * The Pockpack package is a quick wrap to make connecting and
  * consuming the pocket API much simpler and quicker to get up and running.
@@ -17,8 +18,9 @@ use Duellsy\Pockpack\NoConsumerKeyException;
  */
 class PockpackAuth
 {
-
     const BASE_URL = 'https://getpocket.com';
+
+    private $client;
 
     /**
      * Give external access to the base URL
@@ -28,8 +30,6 @@ class PockpackAuth
         return self::BASE_URL;
     }
 
-
-
     /**
      * Get the initial request token to kick off the OAuth process
      *
@@ -37,7 +37,6 @@ class PockpackAuth
      */
     public function connect($consumer_key = null)
     {
-
         if( is_null($consumer_key) OR $consumer_key == '') {
             throw new NoConsumerKeyException("No consumer key given when connecting via PockpackAuth");
         }
@@ -47,7 +46,7 @@ class PockpackAuth
             'redirect_uri'  => '.'
         );
 
-        $client = new Client(self::BASE_URL);
+        $client = $this->getClient();
         $request = $client->post('/v3/oauth/request');
         $request->getParams()->set('redirect.strict', true);
         $request->setHeader('Content-Type', 'application/json; charset=UTF8');
@@ -60,10 +59,7 @@ class PockpackAuth
         $request_token = $data->code;
 
         return $request_token;
-
     }
-
-
 
     /**
      * Grab an access token from the pocket API, after sending it
@@ -79,7 +75,6 @@ class PockpackAuth
         $access_token = $pocketData->access_token;
 
         return $access_token;
-
     }
 
     /**
@@ -113,7 +108,7 @@ class PockpackAuth
             'code'  => $request_token
         );
 
-        $client = new Client(self::BASE_URL);
+        $client = $this->getClient();
         $request = $client->post('/v3/oauth/authorize');
         $request->getParams()->set('redirect.strict', true);
         $request->setHeader('Content-Type', 'application/json; charset=UTF8');
@@ -126,6 +121,20 @@ class PockpackAuth
         return $data;
     }
 
+    /**
+     * Get the client used to query Pocket.
+     *
+     * @return  Client HTTP Client used to communicate with Pocket
+     */
+    public function getClient()
+    {
+        if ( $this->client ) {
+            return $this->client;
+        }
 
+        $this->client = new Client(self::BASE_URL);
+
+        return $this->client;
+    }
 
 }
