@@ -1,7 +1,6 @@
 <?php namespace Duellsy\Pockpack;
 
 use Guzzle\Http\Client;
-use Duellsy\Pockpack\EmptyConstructorException;
 use Duellsy\Pockpack\NoPockpackQueueException;
 
 /**
@@ -25,16 +24,10 @@ class Pockpack
 
     const BASE_URL = 'https://getpocket.com';
 
-    public function __construct($consumer_key = null, $access_token = null)
+    public function __construct($consumer_key, $access_token)
     {
-
-        if( is_null($consumer_key) OR is_null($access_token) OR $consumer_key == '' OR $access_token == '') {
-            throw new EmptyConstructorException("consumer_key and access_token are required params when initiating Pockpack");
-        }
-
         $this->consumer_key = $consumer_key;
         $this->access_token = $access_token;
-
     }
 
 

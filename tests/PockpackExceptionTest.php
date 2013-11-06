@@ -16,7 +16,7 @@ class PocketExceptionTest extends PHPUnit_Framework_TestCase
 
 
     /**
-     * @expectedException Duellsy\Pockpack\EmptyConstructorException
+     * @expectedException PHPUnit_Framework_Error_Warning
      */
     public function testPockpackConstructorRequiredParamsException()
     {

@@ -13,7 +13,6 @@
  * @link       https://github.com/duellsy/pockpack
  */
 
-class EmptyConstructorException extends \UnexpectedValueException {}
 class NoConsumerKeyException extends \UnexpectedValueException {}
 class NoItemException extends \UnexpectedValueException {}
 class InvalidItemTypeException extends \UnexpectedValueException {}
