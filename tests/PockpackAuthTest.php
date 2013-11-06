@@ -23,6 +23,28 @@ class PocketAuthTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException PHPUnit_Framework_Error_Warning
+     */
+    public function testConnectionRequiresConsumerKey()
+    {
+        $this->pockpack_auth->connect();
+    }
+
+    public function testSuccessfulConnectionReturnsToken()
+    {
+        $response = new Response(200);
+        $response->setBody(json_encode(array(
+            'code' => 'fake_token'
+        )));
+
+        $this->setPocketResponse($response);
+
+        $token = $this->pockpack_auth->connect('fake_consumer_key');
+
+        $this->assertEquals( 'fake_token', $token );
+    }
+
+    /**
      * Convieniece method to quickly mock the response from Pocket
      * 
      * @param  Response $response

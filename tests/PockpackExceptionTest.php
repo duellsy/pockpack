@@ -3,18 +3,6 @@
 class PocketExceptionTest extends PHPUnit_Framework_TestCase
 {
 
-
-    public function setUp()
-    {
-
-    }
-
-    public function tearDown()
-    {
-    }
-
-
-
     /**
      * @expectedException PHPUnit_Framework_Error_Warning
      */
@@ -23,17 +11,14 @@ class PocketExceptionTest extends PHPUnit_Framework_TestCase
         $pockpack = new Duellsy\Pockpack\Pockpack();
     }
 
-
-
     /**
-     * @expectedException Duellsy\Pockpack\NoConsumerKeyException
+     * @expectedException PHPUnit_Framework_Error_Warning
      */
     public function testPockpackAuthConnectException()
     {
         $pockpackauth = new Duellsy\Pockpack\PockpackAuth();
         $pockpackauth->connect();
     }
-
 
     /**
      * @expectedException Duellsy\Pockpack\NoItemException
@@ -44,8 +29,6 @@ class PocketExceptionTest extends PHPUnit_Framework_TestCase
         $pockpack_q->add(array('item_id' => 123));
     }
 
-
-
     /**
      * @expectedException Duellsy\Pockpack\NoItemException
      */
@@ -54,8 +37,6 @@ class PocketExceptionTest extends PHPUnit_Framework_TestCase
         $pockpack_q = new Duellsy\Pockpack\PockpackQueue();
         $pockpack_q->favorite();
     }
-
-
 
     /**
      * @expectedException Duellsy\Pockpack\InvalidItemTypeException
@@ -66,8 +47,6 @@ class PocketExceptionTest extends PHPUnit_Framework_TestCase
         $pockpack_q->favorite("abc");
     }
 
-
-
     /**
      * @expectedException Duellsy\Pockpack\NoPockpackQueueException
      */
@@ -76,8 +55,5 @@ class PocketExceptionTest extends PHPUnit_Framework_TestCase
         $pockpack = new Duellsy\Pockpack\Pockpack("fake_key", "fake_token");
         $pockpack->send();
     }
-
-
-
 
 }

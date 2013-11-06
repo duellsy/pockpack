@@ -35,12 +35,8 @@ class PockpackAuth
      *
      * @param  string $consumer_key
      */
-    public function connect($consumer_key = null)
+    public function connect($consumer_key)
     {
-        if( is_null($consumer_key) OR $consumer_key == '') {
-            throw new NoConsumerKeyException("No consumer key given when connecting via PockpackAuth");
-        }
-
         $params = array(
             'consumer_key'  => $consumer_key,
             'redirect_uri'  => '.'
