@@ -93,8 +93,7 @@ class Pockpack
     }
 
     /**
-     * Get the current client used to query Pocket.
-     * Defaults to standard behaviour.
+     * Get the client used to query Pocket.
      *
      * @return  Client HTTP Client used to communicate with Pocket
      */
@@ -107,16 +106,6 @@ class Pockpack
         $this->client = new Client(self::BASE_URL);
 
         return $this->client;
-    }
-
-    /**
-     * Allows the client dependency to be injected at runtime for unit tests.
-     *
-     * @param  Client $client
-     */
-    public function setClient($client)
-    {
-        $this->client = $client;
     }
 
 }
