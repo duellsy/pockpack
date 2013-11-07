@@ -1,7 +1,6 @@
 <?php namespace Duellsy\Pockpack;
 
 use Guzzle\Http\Client;
-use Duellsy\Pockpack\EmptyConstructorException;
 use Duellsy\Pockpack\NoPockpackQueueException;
 
 /**
@@ -19,24 +18,17 @@ use Duellsy\Pockpack\NoPockpackQueueException;
  */
 class Pockpack
 {
-
-    private $consumer_key = '';
-    private $access_token = '';
-
     const BASE_URL = 'https://getpocket.com';
 
-    public function __construct($consumer_key = null, $access_token = null)
+    private $consumer_key;
+    private $access_token;
+    private $client;
+
+    public function __construct($consumer_key, $access_token)
     {
-
-        if( is_null($consumer_key) OR is_null($access_token) OR $consumer_key == '' OR $access_token == '') {
-            throw new EmptyConstructorException("consumer_key and access_token are required params when initiating Pockpack");
-        }
-
         $this->consumer_key = $consumer_key;
         $this->access_token = $access_token;
-
     }
-
 
     /**
      * Responsible for sending the request to the pocket API
@@ -47,7 +39,6 @@ class Pockpack
      */
     public function send(PockpackQueue $queue = null)
     {
-
         if( is_null($queue) ) {
             throw new NoPockpackQueueException();
         }
@@ -55,12 +46,14 @@ class Pockpack
         $actions = json_encode($queue->getActions());
         $actions = urlencode($actions);
 
-        $client = new Client(self::BASE_URL);
-        $request = $client->get(
-            '/v3/send?actions=' . $actions .
-            '&consumer_key=' . $this->consumer_key .
-            '&access_token=' . $this->access_token
+        $params = array(
+            'actions'       => $actions,
+            'consumer_key'  => $this->consumer_key,
+            'access_token'  => $this->access_token
         );
+
+        $request = $this->getClient()->get('/v3/send');
+        $request->setBody(json_encode($params));
 
         $response = $request->send();
 
@@ -68,11 +61,7 @@ class Pockpack
         $queue->clear();
 
         return json_decode($response->getBody());
-
     }
-
-
-
 
     /**
      * Get a list of active bookmarks from the API
@@ -82,7 +71,6 @@ class Pockpack
      */
     public function retrieve($options = array())
     {
-
         $params = array(
             'consumer_key'  => $this->consumer_key,
             'access_token'  => $this->access_token
@@ -91,8 +79,7 @@ class Pockpack
         // combine the creds with any options sent
         $params = array_merge($params, $options);
 
-        $client = new Client(self::BASE_URL);
-        $request = $client->post('/v3/get');
+        $request = $this->getClient()->post('/v3/get');
         $request->getParams()->set('redirect.strict', true);
         $request->setHeader('Content-Type', 'application/json; charset=UTF8');
         $request->setHeader('X-Accept', 'application/json');
@@ -100,7 +87,22 @@ class Pockpack
         $response = $request->send();
 
         return json_decode($response->getBody());
+    }
 
+    /**
+     * Get the client used to query Pocket.
+     *
+     * @return  Client HTTP Client used to communicate with Pocket
+     */
+    public function getClient()
+    {
+        if ( $this->client ) {
+            return $this->client;
+        }
+
+        $this->client = new Client(self::BASE_URL);
+
+        return $this->client;
     }
 
 }
