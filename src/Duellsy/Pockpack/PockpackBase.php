@@ -1,7 +1,6 @@
 <?php namespace Duellsy\Pockpack;
 
 use Guzzle\Http\Client;
-use Duellsy\Pockpack\NoConsumerKeyException;
 
 /**
  * The Pockpack package is a quick wrap to make connecting and
