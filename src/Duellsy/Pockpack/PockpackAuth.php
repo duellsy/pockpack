@@ -1,8 +1,5 @@
 <?php namespace Duellsy\Pockpack;
 
-use Guzzle\Http\Client;
-use Duellsy\Pockpack\NoConsumerKeyException;
-
 /**
  * The Pockpack package is a quick wrap to make connecting and
  * consuming the pocket API much simpler and quicker to get up and running.
@@ -16,20 +13,9 @@ use Duellsy\Pockpack\NoConsumerKeyException;
  * @copyright  (c) 2013 Chris Duell
  * @link       https://github.com/duellsy/pockpack
  */
-class PockpackAuth
+class PockpackAuth extends PockpackBase
 {
-    const BASE_URL = 'https://getpocket.com';
-
-    private $client;
-
-    /**
-     * Give external access to the base URL
-     */
-    public function getBaseUrl()
-    {
-        return self::BASE_URL;
-    }
-
+    
     /**
      * Get the initial request token to kick off the OAuth process
      *
@@ -113,22 +99,6 @@ class PockpackAuth
         $data = json_decode($response->getBody());
 
         return $data;
-    }
-
-    /**
-     * Get the client used to query Pocket.
-     *
-     * @return  Client HTTP Client used to communicate with Pocket
-     */
-    public function getClient()
-    {
-        if ( $this->client ) {
-            return $this->client;
-        }
-
-        $this->client = new Client(self::BASE_URL);
-
-        return $this->client;
     }
 
 }
