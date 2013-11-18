@@ -1,6 +1,5 @@
 <?php namespace Duellsy\Pockpack;
 
-use Guzzle\Http\Client;
 use Duellsy\Pockpack\NoPockpackQueueException;
 
 /**
@@ -16,13 +15,10 @@ use Duellsy\Pockpack\NoPockpackQueueException;
  * @copyright  (c) 2013 Chris Duell
  * @link       https://github.com/duellsy/pockpack
  */
-class Pockpack
+class Pockpack extends PockpackBase
 {
-    const BASE_URL = 'https://getpocket.com';
-
     private $consumer_key;
     private $access_token;
-    private $client;
 
     public function __construct($consumer_key, $access_token)
     {
@@ -87,22 +83,6 @@ class Pockpack
         $response = $request->send();
 
         return json_decode($response->getBody());
-    }
-
-    /**
-     * Get the client used to query Pocket.
-     *
-     * @return  Client HTTP Client used to communicate with Pocket
-     */
-    public function getClient()
-    {
-        if ( $this->client ) {
-            return $this->client;
-        }
-
-        $this->client = new Client(self::BASE_URL);
-
-        return $this->client;
     }
 
 }
