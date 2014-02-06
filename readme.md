@@ -165,3 +165,5 @@ Contributions are encouraged and welcome; to keep things organised, all bugs and
 opened in the github issues tab for the main project, at [duellsy/pockpack/issues](https://github.com/duellsy/pockpack/issues)
 
 All pull requests should be made to the develop branch, so they can be tested before being merged into the master branch.
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/duellsy/pockpack/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
