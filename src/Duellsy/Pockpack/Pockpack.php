@@ -39,17 +39,14 @@ class Pockpack extends PockpackBase
             throw new NoPockpackQueueException();
         }
 
-        $actions = json_encode($queue->getActions());
-        $actions = urlencode($actions);
-
         $params = array(
-            'actions'       => $actions,
+            'actions'       => json_encode($queue->getActions()),
             'consumer_key'  => $this->consumer_key,
             'access_token'  => $this->access_token
         );
 
         $request = $this->getClient()->get('/v3/send');
-        $request->setBody(json_encode($params));
+        $request->getQuery()->merge($params);
 
         $response = $request->send();
 
