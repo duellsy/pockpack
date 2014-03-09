@@ -12,6 +12,26 @@ class PocketTest extends PHPUnit_Framework_TestCase
         $this->pockpack = new Duellsy\Pockpack\Pockpack('fake_consumer_key', 'fake_access_token');
     }
 
+    public function testSending()
+    {
+        $response = new Response(200);
+        $response->setBody(json_encode(array(
+            'action_results' => array(true),
+            'status' => 1,
+        )));
+        $this->setPocketResponse($response);
+
+        $pockpack_q = new Duellsy\Pockpack\PockpackQueue();
+        $pockpack_q->add(array(
+            'url'   => 'http://www.example.com'
+        ));
+
+        $response = $this->pockpack->send($pockpack_q);
+        $this->assertEquals(1, $response->status);
+        $this->assertCount(1, $response->action_results);
+        $this->assertTrue($response->action_results[0]);
+    }
+
     public function testRetrieving()
     {
         $response = new Response(200);
