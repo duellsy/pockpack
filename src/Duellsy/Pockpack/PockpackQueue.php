@@ -51,7 +51,7 @@ class PockpackQueue
      * to wrap the request in the required format for the
      * pocket API.
      *
-     * Valid actions are: favorite, unfavorite, archive, readd, delete
+     * Valid actions are: favorite, unfavorite, archive, readd, delete, tags_clear
      *
      * @param  int $item_id
      * @param  string $action
@@ -79,9 +79,47 @@ class PockpackQueue
 
 
     /**
-     * Archive a particular bookmark
+     * All double tag actions are routed through this method,
+     * to wrap the request in the required format for the
+     * pocket API.
      *
-     * @param  int $item_id
+     * Valid actions are: tags_add, tags_remove, tags_replace
+     *
+     * @param  array $tag_info
+     * @param  string $action
+     */
+    public function tags_queue($tag_info = array(), $action = null)
+    {
+
+        if( ! isset($tag_info['item_id']) ) {
+            throw new NoItemException("No item id was sent");
+        } else if ( ! is_numeric($tag_info['item_id']) ){
+            throw new InvalidItemTypeException("The item id: {$tag_info['item_id']} is not valid it should be a number");
+        }
+
+        if( sizeof($tag_info['tags']) == 0 ) {
+            throw new NoItemException("No tags received");
+        }
+        
+        $base_info  = array(
+            'action'        => $action,
+            'time'          => time()
+        );
+
+        $tag_info = array_merge($base_info, $tag_info);
+
+        $this->actions[] = $tag_info;
+
+        return true;
+
+    }
+
+
+
+    /**
+     * Add a particular bookmark
+     *
+     * @param  array $link_info
      */
     public function add($link_info = array())
     {
@@ -104,7 +142,7 @@ class PockpackQueue
     }
 
 
-
+    
     /**
      * Archive a particular bookmark
      *
@@ -161,6 +199,52 @@ class PockpackQueue
     public function delete($item_id = null)
     {
         return self::queue($item_id, 'delete');
+    }
+
+
+
+    /**
+     * Add tags to a bookmark
+     *
+     * @param  array $tag_info
+     */
+    public function tags_add($tag_info = array())
+    {
+        return self::tags_queue($tag_info, 'tags_add');
+    }
+
+
+    /**
+     * Remove tags from a bookmark
+     *
+     * @param  array $tag_info
+     */
+    public function tags_remove($tag_info = array())
+    {
+        return self::tags_queue($tag_info, 'tags_remove');
+    }
+
+
+    /**
+     * Replace tags from a bookmark
+     *
+     * @param  array $tag_info
+     */
+    public function tags_replace($tag_info = array())
+    {
+        return self::tags_queue($tag_info, 'tags_replace');
+    }
+
+
+
+    /**
+     * Clear all tags of a bookmark
+     *
+     * @param  int $item_id
+     */
+    public function tags_clear($item_id = null)
+    {
+        return self::queue($item_id, 'tags_clear');
     }
 
 
