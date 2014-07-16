@@ -158,7 +158,51 @@ $pockpack_q->unfavorite($item_id);
 $pockpack_q->delete($item_id);
 ```
 
+## Tagging Actions for bookmarks
 
+The main flow of tagging is as follows
+
+```
+$pockpack = new Pockpack($pocket_consumer_key, $pocket_access_token);
+$pockpack_q = new PockpackQueue();
+
+$tags = array("sampleTag1","sampleTag2");
+$tag_info = array(
+    'item_id'     => $item_id,
+    'tags'        => $tags
+    
+);
+
+$pockpack_q->tags_add($tag_info);
+
+$pockpack->send($pockpack_q);
+```
+
+### Add Tags
+
+```
+$pockpack_q->tags_add($tag_info);
+```
+
+### Remove Tags
+
+```
+$pockpack_q->tags_remove($tag_info);
+```
+
+### Replace Tags
+
+```
+$pockpack_q->tags_replace($tag_info);
+```
+
+### Clear Tags
+
+Clear Tag does not require `$tag_info` but only `$item_id`
+
+```
+$pockpack_q->tags_clear($item_id);
+```
 ## Contributing
 
 Contributions are encouraged and welcome; to keep things organised, all bugs and requests should be
