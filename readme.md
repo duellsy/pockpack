@@ -59,11 +59,12 @@ $username = $data['username'];
 
 ### Retreive reading list
 This will return a full list of all active (unarchived) bookmarks, optionally
-you can have it also return extra information such as images
+you can have it also return extra information such as images. If you would prefer the result to be an array, you can send a second boolean value to the retrieve function set to true.
 
 ```
 $pockpack = new Pockpack($consumer_key, $access_token);
-$list = $pockpack->retrieve($options);
+$as_array = true; // false will return JSON, true will return an array
+$list = $pockpack->retrieve($options[, $as_array]); // the second parameter is optional, defaults to false
 ```
 
 The options array allows you to control exactly what is returned from the API.
