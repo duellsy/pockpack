@@ -57,12 +57,14 @@ class Pockpack extends PockpackBase
     }
 
     /**
-     * Get a list of active bookmarks from the API
+     * Retrieve the data from the pocket API
      *
-     * @param  string $consumer_key
-     * @param  string $access_token
+     * @param array   $options options to filter the data
+     * @param boolean $isArray if decode JSON to array
+     *
+     * @return array
      */
-    public function retrieve($options = array())
+    public function retrieve($options = array(), $isArray = false)
     {
         $params = array(
             'consumer_key'  => $this->consumer_key,
@@ -79,7 +81,7 @@ class Pockpack extends PockpackBase
         $request->setBody(json_encode($params));
         $response = $request->send();
 
-        return json_decode($response->getBody());
+        return json_decode($response->getBody(), $isArray);
     }
 
 }
