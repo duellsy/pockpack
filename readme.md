@@ -63,8 +63,8 @@ you can have it also return extra information such as images. If you would prefe
 
 ```
 $pockpack = new Pockpack($consumer_key, $access_token);
-$as_array = true; // false will return JSON, true will return an array
-$list = $pockpack->retrieve($options[, $as_array]); // the second parameter is optional, defaults to false
+$as_array = true; // false will return a stdClass object, true will return an array
+$list = $pockpack->retrieve($options, [$as_array]); // the second parameter is optional, defaults to false
 ```
 
 The options array allows you to control exactly what is returned from the API.
